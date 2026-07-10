@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+logs/
+uploads/
+outputs/
+reports/
+*.log
+.pytest_cache/
+test_api.py
+server_test.log

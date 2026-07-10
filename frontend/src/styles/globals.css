@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #2563EB;
+  --primary-end: #4F46E5;
+  --accent: #06B6D4;
+  --bg: #F8FAFC;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: #0F172A;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-slate-100/80 transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-card-hover -translate-y-1;
+    border-color: rgba(37, 99, 235, 0.15);
+  }
+
+  .btn-primary {
+    @apply bg-gradient-primary text-white font-semibold rounded-xl px-6 py-3 shadow-glow-sm
+           transition-all duration-200 hover:scale-[1.03] hover:shadow-glow active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-white text-slate-700 font-semibold rounded-xl px-6 py-3 border border-slate-200
+           transition-all duration-200 hover:bg-slate-50 hover:border-slate-300 hover:shadow-card active:scale-[0.98];
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #2563EB, #4F46E5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .icon-gradient {
+    background: linear-gradient(135deg, #2563EB, #4F46E5);
+  }
+
+  .animated-border {
+    background: linear-gradient(90deg, #2563EB, #4F46E5, #06B6D4, #2563EB);
+    background-size: 300% 100%;
+    animation: gradient 3s linear infinite;
+  }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-delay { animation: float 6s ease-in-out 2s infinite; }
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f4ff 25%, #e0e8ff 50%, #f0f4ff 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F8FAFC; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }

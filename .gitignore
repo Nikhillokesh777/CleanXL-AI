@@ -1,0 +1,32 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/logs/
+backend/uploads/
+backend/outputs/
+backend/reports/
+backend/*.log
+backend/.pytest_cache/
+backend/test_api.py
+backend/server_test.log
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dev.log
+frontend/.oxlintrc.json
+
+# Env files
+backend/.env
+frontend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.vscode/
+.idea/
