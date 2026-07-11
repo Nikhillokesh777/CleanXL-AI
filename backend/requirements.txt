@@ -1,12 +1,16 @@
-fastapi==0.115.6
-uvicorn[standard]==0.32.1
+# Pinned for Python 3.11 on Render (Linux x86_64)
+# All packages have pre-built wheels — zero Rust/C compilation required
+
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
 pandas==2.2.3
-numpy==2.2.0
-openpyxl==3.1.5
-pydantic==2.10.3
-pydantic-settings==2.7.0
-python-multipart==0.0.20
-loguru==0.7.3
-aiofiles==24.1.0
+numpy==1.26.4
+openpyxl==3.1.2
+pydantic==2.7.1
+pydantic-settings==2.2.1
+pydantic-core==2.18.2
+python-multipart==0.0.9
+loguru==0.7.2
+aiofiles==23.2.1
 python-dateutil==2.9.0
 xlrd==2.0.1

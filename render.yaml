@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: cleanxl-ai-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: UPLOAD_DIR
+        value: /tmp/uploads
+      - key: OUTPUT_DIR
+        value: /tmp/outputs
+      - key: REPORT_DIR
+        value: /tmp/reports
+      - key: LOG_DIR
+        value: /tmp/logs
+      - key: MAX_FILE_SIZE_MB
+        value: 50
+      - key: CORS_ORIGINS
+        value: "*"
