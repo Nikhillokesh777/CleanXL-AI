@@ -2,10 +2,10 @@ import { motion } from 'framer-motion';
 import { Download, FileSpreadsheet, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
-import { API_BASE_URL } from '../../utils/constants';
+import { apiUrl } from '../../services/api';
 
 const DownloadCard = ({ fileId, filename = 'cleaned_data.xlsx' }) => {
-  const downloadUrl = `${API_BASE_URL}/api/download/${fileId}`;
+  const downloadUrl = apiUrl(`/api/download/${fileId}`);
 
   return (
     <motion.div

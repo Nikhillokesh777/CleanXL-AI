@@ -1,9 +1,18 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
+
+export const API_BASE_URL = (import.meta.env.VITE_API_URL?.trim() || 'https://cleanxl-ai.onrender.com').replace(/\/$/, '');
+
+export const apiUrl = (path = '') => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
+};
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 120000,
+  headers: {
+    Accept: 'application/json',
+  },
 });
 
 api.interceptors.response.use(

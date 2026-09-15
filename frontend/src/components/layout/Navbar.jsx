@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Menu, X, ExternalLink } from 'lucide-react';
+import { Sparkles, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '../../utils/constants';
 import Button from '../common/Button';
 

@@ -5,8 +5,7 @@ import {
   CloudUpload, FileSpreadsheet, AlertCircle, CheckCircle,
   Download, RefreshCw, X, Sparkles
 } from 'lucide-react';
-import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
+import api, { apiUrl } from '../services/api';
 
 // ── Steps ─────────────────────────────────────────────────────────────────────
 const STEPS = [
@@ -80,6 +79,7 @@ const Upload = () => {
   const [error, setError]       = useState('');
   const [results, setResults]   = useState(null);
   const [filename, setFilename] = useState('');
+  const [isWakingServer, setIsWakingServer] = useState(false);
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -88,26 +88,36 @@ const Upload = () => {
     setResults(null);
     setFilename(file.name);
     setStep(0);
+    setIsWakingServer(false);
     setPhase('processing');
+
+    const wakeTimer = setTimeout(() => {
+      setIsWakingServer(true);
+    }, 4000);
 
     try {
       // Start upload
       const form = new FormData();
       form.append('file', file);
 
-      const uploadPromise = axios.post(`${API_BASE_URL}/api/upload`, form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 120000,
-      });
+      const uploadPromise = api.post('/api/upload', form);
 
-      // Animate steps while upload runs
-      for (let i = 0; i < STEPS.length; i++) {
-        await sleep(600);
+      // Smoothly advance through initial steps
+      for (let i = 0; i < Math.min(4, STEPS.length); i++) {
+        await sleep(700);
         setStep(i + 1);
       }
 
       // Wait for real response
       const { data } = await uploadPromise;
+      clearTimeout(wakeTimer);
+      setIsWakingServer(false);
+
+      // Finish remaining steps
+      for (let i = 4; i < STEPS.length; i++) {
+        setStep(i + 1);
+        await sleep(250);
+      }
 
       if (!data?.success) throw new Error(data?.message || 'Server error');
 
@@ -126,12 +136,24 @@ const Upload = () => {
       setPhase('done');
 
     } catch (err) {
+      clearTimeout(wakeTimer);
+      setIsWakingServer(false);
       console.error('[Upload Error]', err);
-      const msg =
+
+      let msg =
         err?.response?.data?.detail ||
-        err?.response?.data?.message ||
-        err?.message ||
-        'Upload failed. Please try again.';
+        err?.response?.data?.message;
+
+      if (!msg) {
+        if (err?.code === 'ERR_NETWORK' || err?.message === 'Network Error') {
+          msg = 'Unable to reach backend server. If the server was idle, it may take ~60 seconds to wake up on Render free tier. Please try again.';
+        } else if (err?.code === 'ECONNABORTED' || err?.message?.includes('timeout')) {
+          msg = 'Request timed out waiting for cloud server to wake up. Please try again in a few moments.';
+        } else {
+          msg = err?.message || 'Upload failed. Please try again.';
+        }
+      }
+
       setError(typeof msg === 'string' ? msg : JSON.stringify(msg));
       setPhase('error');
     }
@@ -274,6 +296,18 @@ const Upload = () => {
               <div className="space-y-2">
                 {STEPS.map((label, i) => <StepItem key={label} label={label} index={i} currentStep={step} />)}
               </div>
+
+              {isWakingServer && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 p-3.5 bg-amber-50 border border-amber-200/80 rounded-2xl text-xs text-amber-800 text-center leading-relaxed"
+                >
+                  <span className="font-semibold">Waking up cloud server...</span>
+                  <br />
+                  On Render free tier, idle instances may take ~40–60s to boot. Your file is uploading.
+                </motion.div>
+              )}
             </motion.div>
           )}
 
@@ -316,7 +350,7 @@ const Upload = () => {
               {/* Download button — direct browser link, no axios */}
               <div className="flex flex-col gap-3">
                 <a
-                  href={`${API_BASE_URL}/api/download/${results.file_id}`}
+                  href={apiUrl(`/api/download/${results.file_id}`)}
                   download="cleaned_data.xlsx"
                   className="btn-primary flex items-center justify-center gap-2 py-4 text-base rounded-2xl no-underline"
                 >

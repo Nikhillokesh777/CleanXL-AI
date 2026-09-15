@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, ExternalLink, Heart } from 'lucide-react';
+import { Sparkles, Heart } from 'lucide-react';
 
 const Footer = () => (
   <footer className="bg-slate-900 text-slate-400 mt-24">

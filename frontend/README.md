@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+Open the local URL printed by Vite.
 
 ## Project Structure
 
@@ -50,10 +50,9 @@ src/
 Set `VITE_API_URL` in a `.env` file to point to your FastAPI backend:
 
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=https://cleanxl-ai.onrender.com
 ```
 
 Expected API endpoints:
-- `POST /upload` — Upload file, returns `{ file_id }`
-- `POST /clean/:file_id` — Clean file, returns stats
-- `GET /download/:file_id` — Download cleaned file (blob)
+- `POST /api/upload` — Upload file, returns `{ file_id }`
+- `GET /api/download/:file_id` — Download cleaned file
